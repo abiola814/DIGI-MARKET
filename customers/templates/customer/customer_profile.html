@@ -1,0 +1,115 @@
+{% extends 'core/base.html' %} 
+{% block title %}Manage My Account {% endblock %}
+{% load static %} 
+{% block body %}
+<link
+  href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css"
+  rel="stylesheet"
+/>
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css"
+/>
+
+<section class="bg-white">
+  <div class="container mx-auto flex items-center flex-wrap pt-4 pb-12">
+    <nav id="store" class="w-full z-30 top-0 px-6 py-1">
+      <div
+        class="
+          w-full
+          container
+          mx-auto
+          flex flex-wrap
+          items-center
+          justify-between
+          mt-0
+          px-2
+          py-3
+        "
+      >
+        <nav class="breadcrumb is-small bg-white has-succeeds-separator" aria-label="breadcrumbs">
+          <ul>
+            <li><a href="{% url 'customer_profile' %}">My Profile</a></li>
+            <li><a href="{% url 'order:customer_order_history' %}">My Orders</a></li>
+            <li><a href="{% url 'customer_review_history' %}">My Reviews</a></li>
+            <li><a href="{% url 'customer_wishlist_and_followed_store' %}">My Wishlist & Followed Stores</a>
+            </li>
+          </ul>
+        </nav>
+        </a>
+          <h3 class="is-size-4 font-extrabold md:text-lg has-text-left-mobile has-text-left">Manage My Account</h3>
+      </div>
+    </nav>
+    {% if messages %} 
+      {% for message in messages %}
+      <div class="notification is-success is-toast">{{ message }}</div>
+      {% endfor %} 
+    {% endif %}
+
+    <div class="card-content">
+        <div class="media">
+          <div class="media-left">
+            <div class="relative w-24 h-24">
+              <img class="rounded-full border border-gray-100 shadow-sm" src="{{ customer.image.url }}" alt="{{customer.full_name}}" />
+              <div class="absolute top-0 right-0 h-6 w-6 my-1 border-4 border-white rounded-full bg-green-400 z-2"></div>
+            </div>
+            </div>
+            <div class="media-content">
+              <p class="title is-4">{{customer.full_name}}</p>
+              <p class="subtitle is-6">{{customer.email}}</p>
+              <hr>
+              <h3 class="font-extrabold md:text-lg">Shipping Address</h3>
+              <p class="subtitle is-size-6 mt-2">{{customer.address}} - {{customer.country.name}}
+              <br>{{customer.phone_number}}</p>
+
+              <a  href="{% url 'customer_profile_update'%}" class="button is-dark is-small no-underline hover:no-underline">Edit</a>
+            </div>
+          </div>
+        </div>
+        <div class="container">
+        <h3 class="font-extrabold md:text-lg">Recent Orders</h3>
+        <table class="table has-text-centered">
+          <tr class="th">
+          {% for item in orders %}
+              <th>Order #</th>
+              <th>Status</th>
+              <th>Placed On</th>
+              <th>Items</th>
+              <th>Total</th>
+              <th></th>
+          </tr>
+       
+                   
+          <tr>
+              <td>{{ forloop.counter }}</td>
+              <td>{{ item.order.status }}</td>
+              <td>{{ item.order.delivered_date }}</td>
+              <td>
+              {% if item.product.image %}
+              <figure class="container-fluid image is-96x96">
+                <img src="{{ item.product.image.url }}">
+              </figure> 
+              {% else %}
+              <figure class="container-fluid image is-96x96">
+                <img src="{{ item.product.url }}">
+              </figure>
+              {% endif %}
+              </td>
+              <td>৳{{ item.product.price }}</td>
+              <td class="pt-5"><a href="{% url 'order:order_details' item.id %}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">MANAGE</a></td>
+          </tr>
+       
+          {% endfor %}
+        </table>
+      </div>
+    </div>
+    </div>
+  </div>
+</section>
+
+
+    {% block footer %}
+        {% include 'core/footer.html' %}
+    {% endblock footer %}
+
+{% endblock body %}

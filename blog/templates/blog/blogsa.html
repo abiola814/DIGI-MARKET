@@ -1,0 +1,141 @@
+{% extends 'core/_base.html' %}
+{% block title %}Blog {% endblock %}
+{% load static %}
+{% load humanize %}
+{% block body %}
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss/dist/tailwind.min.css" rel="stylesheet">
+    <!-- slider Area Start-->
+    <div class="slider-area ">
+        <!-- Mobile Menu -->
+        <div class="single-slider slider-height2 d-flex align-items-center" data-background="{% static 'assets/img/hero/category.jpg' %}">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="hero-cap text-center">
+                            <h2>Blog</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- slider Area End-->
+
+    <!--================Blog Area =================-->
+    <section class="blog_area section-padding">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mb-5 mb-lg-0">
+                    <div class="blog_left_sidebar">
+                        {% for post in page_obj %}
+                        <article class="blog_item">
+                            <div class="blog_item_img">
+                                <img class="card-img rounded-0" src="{{ post.image.url }}" alt="">
+                                <a href="#" class="blog_item_date">
+                                    <h3>{% now "d" %}</h3>
+                                    <p>{% now "M" %}</p>
+                                </a>
+                            </div>
+
+                            <div class="blog_details">
+                                <a class="d-inline-block" href="{{ post.get_absolute_url }}">
+                                    <h2>{{ post.title }}</h2>
+                                </a>
+                                <p>{{ post.content |truncatechars:150 }}</p>
+                                <ul class="blog-info-link">
+                                    <li><a href="#"><i class="fa fa-user"></i>{{ post.tags.all.first | title }}</a></li>
+                                </ul>
+                            </div>
+                        </article>
+
+                       
+                        {% empty %}
+                        <div class="container content-center mx-auto mt-15">
+                            <h1 class="font-bold p-10 text-center text-red-500">
+                            Your search - "{{ query }}" Didn't match any  keyword. Please try again with different keywords.</h1>   
+                        </div>
+                        {% endfor %}
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination justify-content-end">
+                            {% if page_obj.has_previous %}
+                                <a class="page-link" href="?page=1">&laquo; First</a>
+                                <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+                            {% endif %}
+
+                            {% if page_obj.has_next %}
+                                <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+                                <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Last &raquo;</a>
+                            {% endif %}
+                            <li class="page-item"><a class="page-link" href="#"> 
+                            {{ page_obj.number }}</a></li>
+                            <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">
+                            {{ page_obj.paginator.num_pages }}</a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="blog_right_sidebar">
+                        <aside class="single_sidebar_widget search_widget">
+                            <form action="{% url 'blog:search' %}" method="GET">
+                                <div class="form-group">
+                                    <div class="input-group mb-3">
+                                        <input name='q' type="text" class="form-control" placeholder='Search Keyword'
+                                            onfocus="this.placeholder = ''"
+                                            onblur="this.placeholder = 'Search Keyword'">
+                                        <div class="input-group-append">
+                                            <button class="btns" type="button"><i class="ti-search"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button class="button rounded-0 primary-bg text-white w-100 btn_1 boxed-btn"
+                                    type="submit">Search</button>
+                            </form>
+                        </aside>
+    
+                        <aside class="single_sidebar_widget post_category_widget">
+                            <h4 class="widget_title">Category</h4>
+                            <ul class="list cat-list">
+                                {% for category in categories %}
+                                <li>
+                                    <a href="{% url 'blog:blog_view' %}?category={{category.name}}" class="d-flex">
+                                        <p>{{category.name | title}}</p>
+                                    </a>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </aside>
+
+                        <aside class="single_sidebar_widget popular_post_widget">
+
+                            <h3 class="widget_title">Recent Post</h3>
+                            <div class="media post_item">
+                                <img src="{% static 'assets/img/post/post_1.png' %}" alt="post">
+                                <div class="media-body">
+                                    <a href="single-blog.html">
+                                        <h3>From life was you fish...</h3>
+                                    </a>
+                                    <p>January 12, 2019</p>
+                                </div>
+                            </div>
+                        </aside>
+
+                        <aside class="single_sidebar_widget newsletter_widget">
+                            <h4 class="widget_title">Newsletter</h4>
+
+                            <form action="#">
+                                <div class="form-group">
+                                    <input type="email" class="form-control" onfocus="this.placeholder = ''"
+                                        onblur="this.placeholder = 'Enter email'" placeholder='Enter email' required>
+                                </div>
+                                <button class="button rounded-0 primary-bg text-white w-100 btn_1 boxed-btn"
+                                    type="submit">Subscribe</button>
+                            </form>
+                        </aside>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--================Blog Area =================-->
+{% endblock body %}

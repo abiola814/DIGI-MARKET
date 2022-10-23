@@ -1,0 +1,94 @@
+{% extends 'core/_base.html' %}
+{% block title %}Cart {% endblock %}
+{% load static %}
+{% block body %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+<!-- slider Area Start-->
+<div class="slider-area ">
+  <!-- Mobile Menu -->
+  <div class="single-slider slider-height2 d-flex align-items-center" data-background="{% static 'assets/img/hero/category.jpg' %}">
+    <div class="container">
+      <div class="row">
+        <div class="col-xl-12">
+          <div class="hero-cap text-center">
+            <h2>Card List</h2>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- slider Area End-->
+<!--================Cart Area =================-->
+    {% if cart %}
+        <div class="container pt-4 mb-5">
+        <div class="box mb-6">
+            <div class="table">
+                <table class="table is-fullwidth is-striped">
+                    <thead>
+                        <th></th>
+                        <th>Product</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th></th>
+                    </thead>
+
+                    <tbody>
+                        {% for item in cart %}
+                            <tr>
+                                <td>
+                                    {% if item.product.image %}
+                                    <figure class="image is-64x64">
+                                        <img src="">
+                                    </figure>
+                                    {% else %}
+                                    <figure class="image is-64x64">
+                                        <img src="{{ item.product.url }}">
+                                    </figure>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <a href="">{{ item.product.title }}</a>
+                                </td>
+                                <td>
+                                    {{ item.quantity }}
+
+                                    <a href="?change_quantity={{ item.id }}&quantity=-1">-</a>
+                                    <a href="?change_quantity={{ item.id }}&quantity=1">+</a>
+                                </td>
+                                <td>${{ item.total_price }}</td>
+                                <td><a href="?remove_from_cart={{ item.id }}" class="delete">Remove</a></td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td></td>
+                            <td><strong>Total cost</strong></td>
+                            <td><strong>{{ cart|length}}</strong></td>
+                            <td colspan="2"><strong>${{ cart.get_total_price }}</strong></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+         <div class="checkout_btn_inner float-right mb-6">
+            <a href="{% url 'home' %}" class="button is-link is-outlined is-rounded">
+            Continue Shopping
+            </a>
+            <a href="{% url 'order:checkout' %}" class="button is-primary is-rounded">
+            Proceed to checkout
+            </a>
+          </div>
+        </div>
+        </div>
+    {% else %}
+        <div class="container mt-5 pt-5">
+            <div class="notification is-danger">
+                <button class="delete"></button>
+                <p class="text-white">Your cart is empty!<a class="is-underlined" href="{% url 'home' %}">Shopping</a></p>
+            </div>
+        </div>
+    {% endif %}
+<!--================End Cart Area =================-->
+{% endblock body %}

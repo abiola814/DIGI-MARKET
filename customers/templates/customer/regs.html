@@ -1,0 +1,78 @@
+{% extends 'core/base.html' %} 
+{% block title %}Sign Up{% endblock %}
+{% load static %} 
+{% load tailwind_filters %}
+{% block body %}
+<div class="container-fluid">
+    <div class="row px-xl-5">
+        <div class="col-12">
+            <nav class="breadcrumb bg-light mb-30">
+                <a class="breadcrumb-item text-dark" href="#">Home</a>
+                <span class="breadcrumb-item active">Sign up</span>
+            </nav>
+        </div>
+    </div>
+</div>
+{% if messages %} 
+  {% for message in messages %}
+  <div class="notification is-success is-toast">{{ message }}</div>
+  {% endfor %} 
+{% endif %}
+
+  <!-- Contact Start -->
+  <div class="container-fluid">
+    <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4"><span class="bg-secondary pr-3">Contact Us</span></h2>
+    <div class="row px-xl-5">
+        <div class="col-lg-7 mb-5">
+            <div class="contact-form bg-light p-30">
+                <div id="success"></div>
+                <form action="#" method="POST" novalidate="novalidate">
+                    {% csrf_token %}
+
+                    <div class="control-group">
+                        <input type="text" class="form-control" id="name" name="name" placeholder="Your full Name"
+                            required="required" data-validation-required-message="Please enter your full name" />
+                        <p class="help-block text-danger"></p>
+                    </div>
+                    <div class="control-group">
+                        <input type="email" class="form-control" id="email" name="email"placeholder="Your Email"
+                            required="required" data-validation-required-message="Please enter your email" />
+                        <p class="help-block text-danger"></p>
+                    </div>
+                    <div class="control-group">
+                        <input type="text" class="form-control" id="subject" name="phonenumber" placeholder="phonenumber"
+                            required="required" data-validation-required-message="Please enter a phonenumber" />
+                        <p class="help-block text-danger"></p>
+                    </div>
+                    <div class="control-group">
+                        <input type="text" class="form-control" id="subject" name="country" placeholder="country"
+                            required="required" data-validation-required-message="Please enter a country" />
+                        <p class="help-block text-danger"></p>
+                    </div>
+                    <div class="control-group">
+                        <textarea class="form-control" name='address' rows="8" id="address" placeholder="address"
+                            required="required"
+                            data-validation-required-message="Please enter your address"></textarea>
+                        <p class="help-block text-danger"></p>
+                    </div>
+                    <div class="control-group">
+                        <input type="text" class="form-control" id="subject" name="password" placeholder="password"
+                            required="required" data-validation-required-message="Please enter a password" />
+                        <p class="help-block text-danger"></p>
+                    </div>
+                    <div class="control-group">
+                        <input type="text" class="form-control" id="subject" name="password2" placeholder="confirmed password"
+                            required="required" data-validation-required-message="Please enter a confirmed password" />
+                        <p class="help-block text-danger"></p>
+                    </div>
+                    <script src='https://www.google.com/recaptcha/api.js'></script>
+                    <div class="g-recaptcha" data-sitekey="6LfPy3QiAAAAAMyMyB2vyaE5Frgkk2bf5TRx0VJk"></div>
+                    <div>
+                        <button class="btn btn-primary py-2 px-4" type="submit" id="sendMessageButton">Sign Up</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock body %}

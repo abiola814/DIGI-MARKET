@@ -1,0 +1,141 @@
+{% extends 'core/_base.html' %}
+{% block title %}Blog Details {% endblock %}
+{% load static %}
+{% load humanize %}
+{% block body %}
+    <!-- slider Area Start-->
+    <div class="slider-area ">
+      <!-- Mobile Menu -->
+      <div class="single-slider slider-height2 d-flex align-items-center" data-background="{% static 'assets/img/hero/category.jpg' %}">
+          <div class="container">
+              <div class="row">
+                  <div class="col-xl-12">
+                      <div class="hero-cap text-center">
+                          <h2>Details</h2>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+  <!-- slider Area End-->
+     
+   <!--================Blog Area =================-->
+   <section class="blog_area single-post-area section-padding">
+      <div class="container">
+         <div class="row">
+            <div class="col-lg-8 posts-list">
+               <div class="single-post">
+                  <div class="feature-img">
+                     <img class="img-fluid" src="{{ post.image.url }}" alt="">
+                  </div>
+                  <div class="blog_details">
+                     <h2>{{ post.title }}</h2>
+                     <ul class="blog-info-link mt-3 mb-4">
+                        <li><a href="#"><i class="fa fa-user"></i> {{ post.tags.all.first | title }}</a></li>
+                        <li><a href="#"><i class="fa fa-comments"></i> {{total_comments_on_post}} Comments</a></li>
+                     </ul>
+                     <p class="excert">
+                        {{post.content}}
+                     </p>
+                    
+                  </div>
+               </div>
+               <div class="navigation-top">
+                  <div class="d-sm-flex justify-content-between text-center">
+                     <div class="col-sm-4 text-center my-2 my-sm-0">
+    
+                     </div>
+                     <ul class="social-icons">
+                        <li><a href="https://www.facebook.com/sharer/sharer.php?u={{request.build_absolute_uri}}"><i class="fab fa-facebook-f"></i></a></li>
+                        <li><a href="https://twitter.com/home?{{share_able_link}}%20{{request.build_absolute_uri}}">
+                        <i class="fab fa-twitter"></i></a></li>
+                        <li><a href="https://www.linkedin.com/shareArticle?mini=true&url={{request.build_absolute_uri}}&title={{share_able_link}}&summary={{post.content}}&source={{request.build_absolute_uri}}/"><i class="fab fa-linkedin"></i></a></li>
+                        <li><a href="http://www.reddit.com/submit?url={{request.build_absolute_uri}}/&title={{share_able_link}}"><i class="fab fa-reddit"></i></a></li>
+                     </ul>
+                  </div>
+               </div>
+               <div class="comments-area">
+                  <h4>{{total_comments_on_post}}  Comments</h4>
+                  {% for comment in comments %}
+                  <div class="comment-list">
+                     <div class="single-comment justify-content-between d-flex">
+                        <div class="user justify-content-between d-flex">
+                           <div class="thumb">
+                              <img src="{{ comment.customer.image.url }}" alt="{{ comment.customer.full_name }}">
+                           </div>
+                           <div class="desc">
+                              <p class="comment">
+                                 {{ comment.body }}
+                              </p>
+                              <div class="d-flex justify-content-between">
+                                 <div class="d-flex align-items-center">
+                                    <h5>
+                                       <p>{{ comment.customer.full_name }}</p>
+                                    </h5>
+                                    <p class="date">{{ comment.created_at | naturaltime }}</p>
+                                 </div>
+                                 <div class="reply-btn">
+                                    <a href="#" class="btn-reply text-uppercase">reply</a>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  {% endfor %}
+               </div>
+               <div class="comment-form">
+                  <form 
+                     action="{% url 'blog:create_comment' post.slug %}" 
+                     method="POST" 
+                     class="form-contact comment_form"
+                     id="commentForm">
+                     {% csrf_token %}
+                     <div class="row">
+                        <div class="col-12">
+                           <div class="form-group">
+                              <textarea class="form-control w-100" name="body" id="comment" cols="30" rows="9"
+                                 placeholder="Write Comment"></textarea>
+                           </div>
+                        </div>
+                     </div> 
+      
+                     <div class="form-group">
+                        <button type="submit" class="button button-contactForm btn_1 boxed-btn">Submit</button>
+                     </div>
+                  </form>
+               </div>
+            </div>
+            <div class="col-lg-4">
+               <div class="blog_right_sidebar">
+                  <aside class="single_sidebar_widget post_category_widget">
+                     <h4 class="widget_title">Category</h4>
+                     <ul class="list cat-list">
+                        <li>
+                           <a href="#" class="d-flex">
+                              <p>{{category}}</p>
+                              <p>({{total_category}})</p>
+                           </a>
+                        </li>
+                     </ul>
+                  </aside>
+                  <aside class="single_sidebar_widget newsletter_widget">
+                     <h4 class="widget_title">Newsletter</h4>
+                     <form action="#">
+                        <div class="form-group">
+                           <input type="email" class="form-control" onfocus="this.placeholder = ''"
+                              onblur="this.placeholder = 'Enter email'" placeholder='Enter email' required>
+                        </div>
+                        <button class="button rounded-0 primary-bg text-white w-100 btn_1 boxed-btn"
+                           type="submit">Subscribe</button>
+                     </form>
+                  </aside>
+               </div>
+            </div>
+         </div>
+      </div>
+   </section>
+   <!--================ Blog Area end =================-->
+{% endblock body %}
+  

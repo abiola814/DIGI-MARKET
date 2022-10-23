@@ -1,0 +1,157 @@
+{% extends 'core/base.html' %}
+{% block title %}Checkout {% endblock %}
+{% load static %}
+{% block body %}
+ 
+ <!-- Breadcrumb Start -->
+ <div class="container-fluid">
+    <div class="row px-xl-5">
+        <div class="col-12">
+            <nav class="breadcrumb bg-light mb-30">
+                <a class="breadcrumb-item text-dark" href="#">Home</a>
+                <a class="breadcrumb-item text-dark" href="#">Shop</a>
+                <span class="breadcrumb-item active">Checkout</span>
+            </nav>
+        </div>
+    </div>
+</div>
+<!-- Breadcrumb End -->
+{% if messages %} 
+{% for message in messages %}
+  <button class="delete"></button>
+  <div class="notification is-success is-toast">{{ message }}</div>
+{% endfor %} 
+{% endif %}
+
+<!-- Checkout Start -->
+<div class="container-fluid">
+    <div class="row px-xl-5">
+        <div class="col-lg-8">
+            <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Billing Address</span></h5>
+            <div class="bg-light p-30 mb-5">
+         
+    <form  method="POST" id="payment-form">
+                {% csrf_token %}
+                {% if form.non_field_errors %}
+                  <div class="notification is-danger">
+                      {{ form.non_field_errors}}
+                  </div>
+                {% endif %}
+                
+                {% if form.errors %}
+                <div class="notification is-danger">
+                    <ul>
+                        {% for field in form %}
+                            {% for error in field.errors %}
+                                <li><strong>{{ field.label }}: </strong>{{ error }}</li>
+                            {% endfor %}
+                        {% endfor %}
+                    </ul>
+                </div>
+              {% endif %}
+                <div class="row">
+                    <div class="col-md-6 form-group">
+                        <label>First Name</label>
+                        <input class="form-control" type="text" name="first_name" placeholder="John">
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label>Last Name</label>
+                        <input class="form-control" type="text" name="last_name" placeholder="Doe">
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label>E-mail</label>
+                        <input class="form-control" type="text" name="email" placeholder="example@email.com">
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label>Mobile No</label>
+                        <input class="form-control" type="text" name="phone" placeholder="+123 456 789">
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label>Address Line 1</label>
+                        <input class="form-control" type="text" name="address" placeholder="123 Street">
+                    </div>
+       
+                    <div class="col-md-6 form-group">
+                        <label>Place</label>
+                        <input class="form-control" name="place"type="text" placeholder="New York">
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label>ZIP Code</label>
+                        <input class="form-control" type="text" name="zipcode" placeholder="123">
+                    </div>
+                    <div class="col-md-12 form-group">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="newaccount">
+                            <label class="custom-control-label" for="newaccount">Create an account</label>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="shipto">
+                            <label class="custom-control-label" for="shipto"  data-toggle="collapse" data-target="#shipping-address">Ship to different address</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+      
+        </div>
+
+        {% if cart %}
+        <div class="col-lg-4">
+            <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Order Total</span></h5>
+            <div class="bg-light p-30 mb-5">
+                <div class="border-bottom">
+                    <h6 class="mb-3">Products</h6>
+                    {% for item in cart %}
+                    <div class="d-flex justify-content-between">
+                        <p>{{ item.product.title }}  <span>x {{ item.quantity }}</span></p>
+                        <p>${{ item.total_price}}</p>
+                    </div>
+                 {% endfor %}
+                </div>
+                <div class="border-bottom pt-3 pb-2">
+       
+                    <div class="d-flex justify-content-between">
+                        <h6 class="font-weight-medium">Shipping</h6>
+                        <h6 class="font-weight-medium">$10</h6>
+                    </div>
+                </div>
+                <div class="pt-2">
+                    <div class="d-flex justify-content-between mt-2">
+                        <h5>Total</h5>
+                        <h5>${{ cart.get_total_price }}</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="mb-5">
+                <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Payment</span></h5>
+                <div class="bg-light p-30">
+                    <div class="form-group">
+                        <div class="custom-control custom-radio">
+                            <input type="radio" class="custom-control-input" name="payment" id="paypal">
+                            <label class="custom-control-label" for="paypal">Paystack</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="custom-control custom-radio">
+                            <input type="radio" class="custom-control-input" name="payment" id="directcheck">
+                            <label class="custom-control-label" for="directcheck">Direct Check</label>
+                        </div>
+                    </div>
+                    <div class="form-group mb-4">
+                        <div class="custom-control custom-radio">
+                            <input type="radio" class="custom-control-input" name="payment" id="banktransfer">
+                            <label class="custom-control-label" for="banktransfer">Bank Transfer</label>
+                        </div>
+                    </div>
+                    <button class="btn btn-block btn-primary font-weight-bold py-3">Place Order</button>
+                </div>
+            </div>
+        </form>
+        </div>
+        {% else %}
+        <p>You don't have any products in your cart! <a class="is-underlined is-uppercase has-text-weight-bold" href="{% url 'home' %}">Shopping</a></p></p>
+        {% endif %}
+    </div>
+</div>
+{% endblock body %}
