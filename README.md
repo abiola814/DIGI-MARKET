@@ -31,7 +31,7 @@ This project needs a ⭐️ from you. Don't forget to leave a star ⭐️
 ## 
 
 Author:
-<a href="https://www.linkedin.com/in/abiola-oladunjoye-8b61351a7/" target="_blank">Hossain Chisty</a><br>
+<a href="https://www.linkedin.com/in/abiola-oladunjoye-8b61351a7/" target="_blank">Oladunjoye abiola </a><br>
 If you would like to have my help with your team and product, feel free to contact me. 🤓
 <!-- Get in touch - End -->
 <p align="center"><a href="https://github.com/hossainchisty/DIGI#"><img src="http://randojs.com/images/backToTopButton.png" alt="Back to top" height="29"/></a></p>
