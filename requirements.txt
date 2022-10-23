@@ -1,5 +1,6 @@
 amqp==5.0.6
 asgiref==3.4.1
+psycopg2-binary
 async-generator==1.10
 attrs==21.2.0
 autopep8==1.5.7
@@ -36,7 +37,7 @@ kombu==5.1.0
 mccabe==0.6.1
 outcome==1.1.0
 prompt-toolkit==3.0.20
-psycopg2-binary
+
 pycodestyle==2.7.0
 pycparser==2.21
 pyflakes==2.3.1
